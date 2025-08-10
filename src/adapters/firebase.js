@@ -3,7 +3,7 @@ import {
   getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut
 } from 'firebase/auth';
 import {
-  getFirestore, collection, addDoc, getDocs, doc, setDoc, query, where, updateDoc, serverTimestamp
+  getFirestore, collection, addDoc, getDocs, doc, setDoc, updateDoc, serverTimestamp, getDoc
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -34,7 +34,7 @@ export const FirebaseAdapter = {
   getUserCredits: async (uid) => {
     ensureInit();
     const docRef = doc(db, 'credits', uid);
-    const snap = await (await import('firebase/firestore')).getDoc(docRef);
+    const snap = await getDoc(docRef);
     if (!snap.exists()) {
       await setDoc(docRef, { balance: 1, updatedAt: serverTimestamp() });
       return 1;
@@ -62,9 +62,8 @@ export const FirebaseAdapter = {
     ensureInit();
     const fdoc = doc(db, 'favors', favorId);
     await updateDoc(fdoc, { status: 'completed', completedAt: serverTimestamp(), giverId, receiverId });
-    // credit logic simplified: +1 to giver, -1 to receiver
+    // For real security move credit changes to Cloud Functions
   },
-  // Minimal groups (collection "groups")
   listGroups: async () => {
     ensureInit();
     const col = collection(db, 'groups');

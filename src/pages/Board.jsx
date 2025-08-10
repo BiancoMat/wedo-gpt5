@@ -32,9 +32,8 @@ export default function Board(){
   async function complete(favorId){
     if(!user) return alert('Accedi prima.')
     const receiverId = user.uid
-    const giverId = prompt('Chi ha fatto il favore? Inserisci UID (demo).', user.uid) || user.uid
+    const giverId = prompt('Chi ha fatto il favore? Inserisci UID.', user.uid) || user.uid
     await Backend.completeFavor(favorId, giverId, receiverId)
-    // adjust balances (works in Local; in Firebase you'd call a cloud function ideally)
     const giverBal = await Backend.getUserCredits(giverId); await Backend.setUserCredits(giverId, giverBal+1)
     const recBal = await Backend.getUserCredits(receiverId); await Backend.setUserCredits(receiverId, recBal-1)
     refresh()
