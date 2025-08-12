@@ -7,6 +7,7 @@ import Board from './pages/Board'
 import Auth from './pages/Auth'
 import Groups from './pages/Groups'
 import Notifications from './pages/Notifications'
+import { ToastProvider } from './components/Toast'
 
 const router = createBrowserRouter([
   { path: "/", element: <App/> },
@@ -18,6 +19,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ToastProvider>
+      <RouterProvider router={router} />
+    </ToastProvider>
   </React.StrictMode>,
 )
